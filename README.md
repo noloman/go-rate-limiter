@@ -2,7 +2,7 @@
 
 ## Usage
 
-To use the `go-rate-limiter` module with the Chi v5 library, you need to configure it and add it to your router's middleware. Below is an example of how to set up and use the rate limiter:
+To use the `go-rate-limiter` module with the [chi v5 library](https://github.com/go-chi/chi), you need to configure it and add it to your router's middleware. Below is an example of how to set up and use the rate limiter:
 
 ```go
 package main
