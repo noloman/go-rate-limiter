@@ -1,4 +1,4 @@
-module github.com/noloman/go-rate-limitter
+module github.com/noloman/go-rate-limiter
 
 go 1.23.0
 
