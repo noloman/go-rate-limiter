@@ -47,7 +47,7 @@ func AddRateLimit(config LimiterConfig, next http.Handler) http.Handler {
 				// Handle cases where the address does not contain a port
 				ip = r.RemoteAddr
 				if net.ParseIP(ip) == nil {
-					fmt.Println("Invalid IP address: %s", ip)
+					fmt.Println("Invalid IP address:", ip)
 					http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 					return
 				}
