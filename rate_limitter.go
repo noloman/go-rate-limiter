@@ -16,7 +16,11 @@ type LimiterConfig struct {
 	Burst   int
 }
 
-func AddRateLimit(config LimiterConfig, next http.Handler) http.Handler {
+type RateLimiterHandler struct {
+	Config LimiterConfig
+}
+
+func (handler RateLimiterHandler) AddRateLimit(next http.Handler) http.Handler {
 	type client struct {
 		limiter  *rate.Limiter
 		lastSeen time.Time
@@ -41,7 +45,7 @@ func AddRateLimit(config LimiterConfig, next http.Handler) http.Handler {
 	}()
 
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if config.Enabled {
+		if handler.Config.Enabled {
 			ip, _, err := net.SplitHostPort(r.RemoteAddr)
 			if err != nil {
 				// Handle cases where the address does not contain a port
@@ -55,7 +59,7 @@ func AddRateLimit(config LimiterConfig, next http.Handler) http.Handler {
 			mu.Lock()
 			if _, found := clients[ip]; !found {
 				clients[ip] = &client{limiter: rate.NewLimiter(
-					rate.Limit(config.Rps), config.Burst,
+					rate.Limit(handler.Config.Rps), handler.Config.Burst,
 				)}
 			}
 			if !clients[ip].limiter.Allow() {
